@@ -54,19 +54,3 @@ def cadastraEstudante():
     db.session.add(novoEstudante)
     db.session.commit()
     return {'id': novoEstudante.id, 'user_id': novoEstudante.user_id}
-
-
-@app.route('\cadastra_empresa', methods=['POST'])
-def cadastraEmpresa():
-    dados = request.get_json()
-    usuario = User.query.get(dados.get('id'))
-    novaEmpresa = Empresa(
-        user_id = usuario.id,
-        CNPJ = dados.get('cnpj'),
-        endereco = dados.get('endereco'),
-        descricao = dados.get('descricao'),
-        telefone = dados.get('telefone')
-    )
-    db.session.add(novaEmpresa)
-    db.session.commit()
-    return {'id': novaEmpresa.id, 'user_id': usuario.id}

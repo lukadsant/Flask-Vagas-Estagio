@@ -16,6 +16,9 @@ mail = Mail(app)
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
+from .routes.empresa import Empresa_bp
+app.register_blueprint(Empresa_bp)
+
 from estagios.rotas import homepage
 from estagios.rotas import confirmaEmail
 from estagios.rotas import cadastraUsuario
