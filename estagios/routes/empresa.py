@@ -1,10 +1,10 @@
 from flask import Blueprint
-from flask import request
+from flask import request, jsonify
 from estagios import db
-from estagios.models import User, RoleEnum, Estudante, Empresa
-Empresa_bp = Blueprint('empresa', __name__, url_prefix='/empresa')
+from estagios.models import User, Empresa
+empresa_bp = Blueprint('empresa', __name__, url_prefix='/empresa')
 
-@Empresa_bp.route('/cadastra_empresa', methods=['POST'])
+@empresa_bp.route('/cadastra_empresa', methods=['POST'])
 def cadastraEmpresa():
     dados = request.get_json()
     usuario = User.query.get(dados.get('id'))
@@ -17,4 +17,4 @@ def cadastraEmpresa():
     )
     db.session.add(novaEmpresa)
     db.session.commit()
-    return {'id': novaEmpresa.id, 'user_id': usuario.id}
+    return jsonify({'id': novaEmpresa.id, 'user_id': usuario.id})

@@ -9,7 +9,7 @@ class RoleEnum(enum.Enum):
     ESTUDANTE = "estudante"
 
 # Tabela associativa para candidaturas (N:N entre Estudante e Vaga)
-estudante_vaga = db.Table('estudante_vaga',
+candidatura = db.Table('candidatura',
     db.Column('estudante_id', db.Integer, db.ForeignKey('estudante.id'), primary_key=True),
     db.Column('vaga_id', db.Integer, db.ForeignKey('vaga.id'), primary_key=True)
 )
@@ -30,14 +30,14 @@ class User(db.Model):
 # Empresa (relacionada 1:1 com User e 1:N com Vaga)
 class Empresa(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    # user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False) empresa não vai ser mais um usuario
     CNPJ = db.Column(db.String(20), unique=True, nullable=False)
     endereco = db.Column(db.String(200), nullable=False)
     nome = db.Column(db.String(100), nullable=False)
     descricao = db.Column(db.Text)
-    liberada = db.Column(db.Boolean, default=False)
+    # liberada = db.Column(db.Boolean, default=False) acho que não vai precisar mais
     telefone = db.Column(db.String(20), nullable=False)
-
+    email = email = db.Column(db.String(120), unique=True, nullable=False)
     # Uma empresa pode ter várias vagas
     vagas = db.relationship('Vaga', backref='empresa', lazy=True)
 
@@ -53,7 +53,7 @@ class Estudante(db.Model):
     periodo = db.Column(db.String(20), nullable=False)
 
     # Relação muitos-para-muitos com Vaga (candidaturas)
-    vagas = db.relationship('Vaga', secondary=estudante_vaga, backref=db.backref('estudantes', lazy='dynamic'))
+    vagas = db.relationship('Vaga', secondary='candidatura', backref=db.backref('estudantes', lazy='dynamic'))
 
 # Vaga de estágio
 class Vaga(db.Model):

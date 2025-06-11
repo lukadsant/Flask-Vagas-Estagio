@@ -11,10 +11,16 @@ mail = Mail(app)
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
-from .routes.empresa import Empresa_bp
-app.register_blueprint(Empresa_bp)
+from .routes.admin import admin_bp
+from .routes.empresa import empresa_bp
+from .routes.estudante import estudante_bp
+from .routes.vaga import vaga_bp
+from .routes.candidatura import candidatura_bp
+from .routes.cadastro import cadastro_bp
 
-from estagios.rotas import homepage
-from estagios.rotas import confirmaEmail
-from estagios.rotas import cadastraUsuario
-from estagios.rotas import cadastraEstudante
+app.register_blueprint(admin_bp)
+app.register_blueprint(empresa_bp)
+app.register_blueprint(estudante_bp)
+app.register_blueprint(vaga_bp)
+app.register_blueprint(candidatura_bp)
+app.register_blueprint(cadastro_bp)
