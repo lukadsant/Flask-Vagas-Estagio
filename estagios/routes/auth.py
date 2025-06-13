@@ -3,8 +3,9 @@ from estagios.models import User, RoleEnum
 from flask import Blueprint, request, jsonify
 from flask_mail import Message
 import random 
+from flask_login import login_user, logout_user
 
-auth_bp = Blueprint('auth', __name__, url_prefix='auth')
+auth_bp = Blueprint('auth', __name__, url_prefix='/auth')
 
 
 @auth_bp.route('/cadastro', methods=['POST'])
@@ -37,20 +38,21 @@ def confirmar_email():
     mail.send(msg)
     return jsonify({'mensagem': 'Email enviado com sucesso.', 'codigo': codigo})
 
-@auth_bp.route('/login/estudante', methods=['POST'])
-def login_estudante():
+@auth_bp.route('/login', methods=['POST'])
+def login():
     dados = request.get_json()
     email = dados.get('email')
     senha = dados.get('senha')
 
-    usuario = User.query.filter_by(email=email).first()
-    if not usuario:
-        return jsonify({'erro': 'Usuário não encontrado'}), 404
+    user = User.query.filter_by(email=email).first()
 
-    if usuario.role != RoleEnum.ESTUDANTE:
-        return jsonify({'erro': 'Usuário não é estudante'}), 403
+    if not user or user.senha != senha:
+        return jsonify({'erro': 'Credenciais inválidas'}), 401
 
-    if usuario.senha != senha:
-        return jsonify({'erro': 'Senha incorreta'}), 401
+    login_user(user)  # cria a sessão
+    return jsonify({'mensagem': 'Login bem-sucedido', 'user_id': user.id})
 
-    return jsonify({'mensagem': 'Login realizado com sucesso', 'user_id': usuario.id})
+@auth_bp.route('/logout', methods=['POST'])
+def logout():
+    logout_user()
+    return jsonify({'mensagem': 'Logout efetuado com sucesso'})

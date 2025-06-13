@@ -1,6 +1,7 @@
 from flask import Blueprint, request, jsonify
 from estagios import db
 from estagios.models import Estudante, User, RoleEnum
+from flask_login import login_required, current_user
 
 estudante_bp = Blueprint('estudante', __name__, url_prefix='/estudante')
 
@@ -46,30 +47,38 @@ def pegar_dados_estudante(user_id):
     })
 
 @estudante_bp.route('/<int:user_id>', methods=['PUT'])
+@login_required
 def atualizar_dados_estudante(user_id):
-    estudante = Estudante.query.filter_by(user_id=user_id).first()
-    if not estudante:
-        return jsonify({'erro': 'Dados do estudante não encontrados'}), 404
+    if current_user.role != RoleEnum.ESTUDANTE:
+        return jsonify({'mensagem': 'Acesso negado'})
+    else:
+        estudante = Estudante.query.filter_by(user_id=user_id).first()
+        if not estudante:
+            return jsonify({'erro': 'Dados do estudante não encontrados'}), 404
 
-    dados = request.get_json()
-    estudante.nome = dados.get('nome', estudante.nome)
-    estudante.curriculo_profissional_link = dados.get('curriculo_profissional_link', estudante.curriculo_profissional_link)
-    estudante.telefone = dados.get('telefone', estudante.telefone)
-    estudante.curso = dados.get('curso', estudante.curso)
-    estudante.periodo = dados.get('periodo', estudante.periodo)
+        dados = request.get_json()
+        estudante.nome = dados.get('nome', estudante.nome)
+        estudante.curriculo_profissional_link = dados.get('curriculo_profissional_link', estudante.curriculo_profissional_link)
+        estudante.telefone = dados.get('telefone', estudante.telefone)
+        estudante.curso = dados.get('curso', estudante.curso)
+        estudante.periodo = dados.get('periodo', estudante.periodo)
 
-    db.session.commit()
+        db.session.commit()
 
-    return jsonify({'mensagem': 'Dados atualizados com sucesso'})
+        return jsonify({'mensagem': 'Dados atualizados com sucesso'})
 
 
 @estudante_bp.route('/<int:user_id>', methods=['DELETE'])
+@login_required
 def excluir_dados_estudante(user_id):
-    estudante = Estudante.query.filter_by(user_id=user_id).first()
-    if not estudante:
-        return jsonify({'erro': 'Dados do estudante não encontrados'}), 404
+    if current_user.role != RoleEnum.ESTUDANTE:
+        return jsonify({'mensagem': 'Acesso negado'})
+    else:
+        estudante = Estudante.query.filter_by(user_id=user_id).first()
+        if not estudante:
+            return jsonify({'erro': 'Dados do estudante não encontrados'}), 404
 
-    db.session.delete(estudante)
-    db.session.commit()
+        db.session.delete(estudante)
+        db.session.commit()
 
-    return jsonify({'mensagem': 'Dados do estudante excluídos com sucesso'})
+        return jsonify({'mensagem': 'Dados do estudante excluídos com sucesso'})
