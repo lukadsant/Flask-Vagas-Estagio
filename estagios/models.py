@@ -28,18 +28,89 @@ class User(db.Model):
     estudante = db.relationship('Estudante', backref='user', uselist=False)
 
 # Empresa (relacionada 1:1 com User e 1:N com Vaga)
-class Empresa(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    # user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False) empresa não vai ser mais um usuario
-    CNPJ = db.Column(db.String(20), unique=True, nullable=False)
-    endereco = db.Column(db.String(200), nullable=False)
-    nome = db.Column(db.String(100), nullable=False)
-    descricao = db.Column(db.Text)
-    # liberada = db.Column(db.Boolean, default=False) acho que não vai precisar mais
-    telefone = db.Column(db.String(20), nullable=False)
-    email = email = db.Column(db.String(120), unique=True, nullable=False)
-    # Uma empresa pode ter várias vagas
-    vagas = db.relationship('Vaga', backref='empresa', lazy=True)
+from flask import Blueprint, request, jsonify
+from estagios import db
+from estagios.models import Empresa, User, RoleEnum
+
+empresa_bp = Blueprint('empresa', __name__, url_prefix='/empresa')
+
+def checar_admin(user_id):
+    usuario = User.query.get(user_id)
+    if not usuario or usuario.role != RoleEnum.ADMIN:
+        return False
+    return True
+
+@empresa_bp.route('', methods=['POST'])
+def criar_empresa():
+    dados = request.get_json()
+    user_id = dados.get('user_id')
+
+    if not checar_admin(user_id):
+        return jsonify({'erro': 'Permissão negada'}), 403
+
+    if Empresa.query.filter_by(cnpj=dados.get('cnpj')).first():
+        return jsonify({'erro': 'Empresa com esse CNPJ já existe'}), 409
+
+    empresa = Empresa(
+        nome=dados.get('nome'),
+        cnpj=dados.get('cnpj'),
+        endereco=dados.get('endereco'),
+        # demais campos...
+    )
+    db.session.add(empresa)
+    db.session.commit()
+
+    return jsonify({'mensagem': 'Empresa criada com sucesso'}), 201
+
+@empresa_bp.route('/<int:id>', methods=['GET'])
+def pegar_empresa(id):
+    empresa = Empresa.query.get(id)
+    if not empresa:
+        return jsonify({'erro': 'Empresa não encontrada'}), 404
+
+    return jsonify({
+        'nome': empresa.nome,
+        'cnpj': empresa.cnpj,
+        'endereco': empresa.endereco,
+        # demais campos...
+    })
+
+@empresa_bp.route('/<int:id>', methods=['PUT'])
+def atualizar_empresa(id):
+    dados = request.get_json()
+    user_id = dados.get('user_id')
+
+    if not checar_admin(user_id):
+        return jsonify({'erro': 'Permissão negada'}), 403
+
+    empresa = Empresa.query.get(id)
+    if not empresa:
+        return jsonify({'erro': 'Empresa não encontrada'}), 404
+
+    empresa.nome = dados.get('nome', empresa.nome)
+    empresa.cnpj = dados.get('cnpj', empresa.cnpj)
+    empresa.endereco = dados.get('endereco', empresa.endereco)
+    # demais campos...
+
+    db.session.commit()
+    return jsonify({'mensagem': 'Empresa atualizada com sucesso'})
+
+@empresa_bp.route('/<int:id>', methods=['DELETE'])
+def deletar_empresa(id):
+    dados = request.get_json()
+    user_id = dados.get('user_id')
+
+    if not checar_admin(user_id):
+        return jsonify({'erro': 'Permissão negada'}), 403
+
+    empresa = Empresa.query.get(id)
+    if not empresa:
+        return jsonify({'erro': 'Empresa não encontrada'}), 404
+
+    db.session.delete(empresa)
+    db.session.commit()
+    return jsonify({'mensagem': 'Empresa deletada com sucesso'})
+
 
 # Estudante (relacionado 1:1 com User e N:N com Vaga)
 class Estudante(db.Model):

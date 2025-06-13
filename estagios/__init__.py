@@ -16,11 +16,11 @@ from .routes.empresa import empresa_bp
 from .routes.estudante import estudante_bp
 from .routes.vaga import vaga_bp
 from .routes.candidatura import candidatura_bp
-from .routes.cadastro import cadastro_bp
+from .routes.auth import auth_bp
 
 app.register_blueprint(admin_bp)
 app.register_blueprint(empresa_bp)
 app.register_blueprint(estudante_bp)
 app.register_blueprint(vaga_bp)
 app.register_blueprint(candidatura_bp)
-app.register_blueprint(cadastro_bp)
+app.register_blueprint(auth_bp)
