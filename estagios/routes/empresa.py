@@ -6,7 +6,7 @@ from flask_login import login_required, current_user
 
 empresa_bp = Blueprint('empresa', __name__, url_prefix='/empresa')
 
-@empresa_bp.route('', methods=['POST'])
+@empresa_bp.route('/cadastro', methods=['POST'])
 @login_required
 def criar_empresa():
     if current_user.role != RoleEnum.ADMIN:
@@ -21,7 +21,7 @@ def criar_empresa():
             return jsonify({'erro': 'Email já cadastrado'}), 409
 
         empresa = Empresa(
-            CNPJ=dados.get('CNPJ'),
+            CNPJ=dados.get('cnpj'),
             endereco=dados.get('endereco'),
             nome=dados.get('nome'),
             descricao=dados.get('descricao'),

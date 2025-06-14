@@ -14,13 +14,14 @@ def cadastro_usuario():
     novo_usuario = User(
         email = dados.get('email'),
         senha = dados.get('senha'),
-        role = RoleEnum(dados.get('role'))
+        role = RoleEnum.ESTUDANTE
     )
     db.session.add(novo_usuario)
     db.session.commit()
 
     return jsonify({
-        'mensagem': 'Usuário criado com sucesso'
+        'mensagem': 'Usuário criado com sucesso',
+        'id': novo_usuario.id
     })
 
 @auth_bp.route('/confirmar-email', methods=['POST'])
@@ -49,7 +50,7 @@ def login():
     if not user or user.senha != senha:
         return jsonify({'erro': 'Credenciais inválidas'}), 401
 
-    login_user(user)  # cria a sessão
+    login_user(user)  
     return jsonify({'mensagem': 'Login bem-sucedido', 'user_id': user.id})
 
 @auth_bp.route('/logout', methods=['POST'])
