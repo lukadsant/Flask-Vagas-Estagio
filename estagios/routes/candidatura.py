@@ -6,7 +6,7 @@ from estagios.models import Estudante, Vaga
 candidatura_bp = Blueprint('candidatura', __name__, url_prefix='/candidatura')
 
 # Criar candidatura (estudante se candidata a uma vaga)
-@candidatura_bp.route('/', methods=['POST'])
+@candidatura_bp.route('/candidatura', methods=['POST'])
 def criar_candidatura():
     dados = request.get_json()
     estudante_id = dados.get('estudante_id')
