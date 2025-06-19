@@ -1,14 +1,18 @@
 from flask import Blueprint, request, jsonify
+from flask_login import login_required, current_user
 from estagios import db
-from estagios.models import Vaga, Empresa
+from estagios.models import Vaga, Empresa, RoleEnum
 
 vaga_bp = Blueprint('vaga', __name__, url_prefix='/vaga')
 
 
 @vaga_bp.route('/', methods=['POST'])
+@login_required
 def criar_vaga():
-    dados = request.get_json()
+    if current_user.role != RoleEnum.ADMIN:
+        return jsonify({'mensagem': 'Acesso negado. Apenas administradores podem criar vagas.'}), 403
 
+    dados = request.get_json()
     empresa = Empresa.query.get(dados.get('empresa_id'))
     if not empresa:
         return jsonify({'erro': 'Empresa não encontrada'}), 404
@@ -64,8 +68,13 @@ def obter_vaga(vaga_id):
         'empresa_nome': vaga.empresa.nome
     })
 
+
 @vaga_bp.route('/<int:vaga_id>', methods=['PUT'])
+@login_required
 def atualizar_vaga(vaga_id):
+    if current_user.role != RoleEnum.ADMIN:
+        return jsonify({'mensagem': 'Acesso negado. Apenas administradores podem atualizar vagas.'}), 403
+
     vaga = Vaga.query.get(vaga_id)
     if not vaga:
         return jsonify({'erro': 'Vaga não encontrada'}), 404
@@ -82,8 +91,13 @@ def atualizar_vaga(vaga_id):
         db.session.rollback()
         return jsonify({'erro': str(e)}), 400
 
+
 @vaga_bp.route('/<int:vaga_id>', methods=['DELETE'])
+@login_required
 def deletar_vaga(vaga_id):
+    if current_user.role != RoleEnum.ADMIN:
+        return jsonify({'mensagem': 'Acesso negado. Apenas administradores podem deletar vagas.'}), 403
+
     vaga = Vaga.query.get(vaga_id)
     if not vaga:
         return jsonify({'erro': 'Vaga não encontrada'}), 404

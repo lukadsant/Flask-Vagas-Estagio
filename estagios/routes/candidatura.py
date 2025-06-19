@@ -1,4 +1,5 @@
 from flask import Blueprint, request, jsonify
+from flask_mail import Message
 from estagios import db
 from estagios.models import Estudante, Vaga
 
@@ -22,7 +23,32 @@ def criar_candidatura():
 
     estudante.vagas.append(vaga)
     db.session.commit()
-    return jsonify({'mensagem': 'Candidatura realizada com sucesso'}), 201
+
+    # Enviar e-mail de confirmação
+    try:
+        msg = Message(
+            subject="Candidatura Confirmada - Estágio Parceiro",
+            sender=("Estágio Parceiro | IFPE", "estagioparceiro@gmail.com"),
+            recipients=[estudante.user_email],
+            body=f"""
+Olá, {estudante.nome}!
+
+Você se candidatou com sucesso à vaga "{vaga.titulo}".
+
+Seu currículo foi encaminhado à empresa. Link informado:
+{estudante.curriculo_profissional_link}
+
+Boa sorte!
+
+Equipe Estágio Parceiro | IFPE
+            """
+        )
+        mail.send(msg)
+    except Exception as e:
+        return jsonify({'mensagem': 'Candidatura criada, mas o envio do e-mail falhou.', 'erro': str(e)}), 500
+
+    return jsonify({'mensagem': 'Candidatura realizada com sucesso. E-mail enviado.'}), 201
+
 
 # Listar vagas que um estudante se candidatou
 @candidatura_bp.route('/estudante/<int:estudante_id>', methods=['GET'])
