@@ -6,7 +6,7 @@ from estagios.models import Estudante, Vaga
 candidatura_bp = Blueprint('candidatura', __name__, url_prefix='/candidatura')
 
 # Criar candidatura (estudante se candidata a uma vaga)
-@candidatura_bp.route('/candidatura', methods=['POST'])
+@candidatura_bp.route('/', methods=['POST'])
 def criar_candidatura():
     dados = request.get_json()
     estudante_id = dados.get('estudante_id')
@@ -24,31 +24,38 @@ def criar_candidatura():
     estudante.vagas.append(vaga)
     db.session.commit()
 
-    # Enviar e-mail de confirmação
+    # Enviar e-mail para a EMPRESA com os dados do estudante
     try:
         msg = Message(
-            subject="Candidatura Confirmada - Estágio Parceiro",
+            subject=f"Novo Candidato para a Vaga: {vaga.titulo}",
             sender=("Estágio Parceiro | IFPE", "estagioparceiro@gmail.com"),
-            recipients=[estudante.user_email],
+            recipients=[vaga.empresa.email],
             body=f"""
-Olá, {estudante.nome}!
+Olá, {vaga.empresa.nome}!
 
-Você se candidatou com sucesso à vaga "{vaga.titulo}".
+O estudante {estudante.nome} acabou de se candidatar à sua vaga de estágio "{vaga.titulo}".
 
-Seu currículo foi encaminhado à empresa. Link informado:
+Dados do candidato:
+- Nome: {estudante.nome}
+- Curso: {estudante.curso}
+- Período: {estudante.periodo}
+- Telefone: {estudante.telefone}
+- E-mail: {estudante.user_email}
+
+Currículo profissional:
 {estudante.curriculo_profissional_link}
 
-Boa sorte!
+Acesse o sistema para gerenciar suas candidaturas.
 
+Atenciosamente,
 Equipe Estágio Parceiro | IFPE
             """
         )
         mail.send(msg)
     except Exception as e:
-        return jsonify({'mensagem': 'Candidatura criada, mas o envio do e-mail falhou.', 'erro': str(e)}), 500
+        return jsonify({'mensagem': 'Candidatura criada, mas o envio do e-mail para a empresa falhou.', 'erro': str(e)}), 500
 
-    return jsonify({'mensagem': 'Candidatura realizada com sucesso. E-mail enviado.'}), 201
-
+    return jsonify({'mensagem': 'Candidatura realizada com sucesso. E-mail enviado à empresa.'}), 201
 
 # Listar vagas que um estudante se candidatou
 @candidatura_bp.route('/estudante/<int:estudante_id>', methods=['GET'])
