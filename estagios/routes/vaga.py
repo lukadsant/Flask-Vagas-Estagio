@@ -35,6 +35,7 @@ def criar_vaga():
 
 @vaga_bp.route('/', methods=['GET'])
 def listar_vagas():
+    print("chegou no listar vagas")
     vagas = Vaga.query.all()
     return jsonify([
         {

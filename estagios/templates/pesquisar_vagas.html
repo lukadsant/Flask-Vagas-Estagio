@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Pesquisar Vagas</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .container-pesquisa {
+      max-width: 1000px;
+      margin: 60px auto 20px;
+      padding: 20px;
+    }
+
+    .filtros {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+      margin-bottom: 30px;
+      align-items: flex-end;
+    }
+
+    .filtros label {
+      font-weight: bold;
+      font-size: 14px;
+    }
+
+    .filtros input, .filtros select {
+      padding: 8px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+
+    .filtros .campo {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .vaga-card {
+      background-color: #e6f2ef;
+      border-radius: 10px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+    }
+
+    .vaga-card h3 {
+      margin-bottom: 8px;
+    }
+
+    .vaga-card p {
+      margin: 4px 0;
+    }
+
+    .vaga-card button {
+      margin-top: 10px;
+      padding: 8px 16px;
+      background-color: #5ba59a;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .vaga-card button:hover {
+      background-color: #7ccfc3;
+    }
+
+    .paginacao {
+      display: flex;
+      justify-content: center;
+      margin-top: 30px;
+      gap: 10px;
+    }
+
+    .paginacao button {
+      padding: 6px 12px;
+      background-color: white;
+      border: 1px solid #5ba59a;
+      color: #5ba59a;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .paginacao button.active {
+      background-color: #5ba59a;
+      color: white;
+    }
+
+    .paginacao button:hover {
+      background-color: #7ccfc3;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo"><a href="index.html">Estágio-Parceiro</a></div>
+    <nav>
+      <a href="dashboard_estudante.html">Dashboard</a>
+    </nav>
+    <div class="botoes-topo">
+      <button class="btn-entrar"><a href="login.html">Sair</a></button>
+    </div>
+  </header>
+
+  <div class="container-pesquisa">
+    <h2>Pesquisar Vagas</h2>
+
+    <div class="filtros">
+      <div class="campo">
+        <label for="curso">Curso</label>
+        <input type="text" id="curso" placeholder="Digite e selecione..." list="listaCursos">
+        <datalist id="listaCursos">
+          <option value="Administração">
+          <option value="Engenharia">
+          <option value="Design">
+          <option value="Sistemas de Informação">
+          <option value="Direito">
+        </datalist>
+      </div>
+
+      <div class="campo">
+        <label for="valorMin">Valor da bolsa (mín)</label>
+        <input type="number" id="valorMin" placeholder="R$ 0,00">
+      </div>
+
+      <div class="campo">
+        <label for="ordem">Ordenar</label>
+        <select id="ordem">
+          <option value="recentes">Mais recentes</option>
+          <option value="antigas">Mais antigas</option>
+          <option value="maior_bolsa">Maior bolsa</option>
+        </select>
+      </div>
+
+      <div class="campo">
+        <button onclick="aplicarFiltros()">Filtrar</button>
+      </div>
+    </div>
+
+    <div id="listaVagas">
+      <!-- Cards de vagas vão aparecer aqui -->
+    </div>
+
+    <div class="paginacao" id="paginacao">
+      <!-- Botões de paginação -->
+    </div>
+  </div>
+
+  <script>
+    // Simulação de vagas vindas do backend (Flask)
+    const todasAsVagas = [
+      { titulo: "Marketing Digital", empresa: "Agência XYZ", cursos: "Administração, Marketing", valor_bolsa: 1200, data: "2025-06-19" },
+      { titulo: "Desenvolvedor Frontend", empresa: "Tech Soluções", cursos: "Sistemas de Informação", valor_bolsa: 1500, data: "2025-06-18" },
+      { titulo: "Design UI/UX", empresa: "Studio Criativo", cursos: "Design", valor_bolsa: 1100, data: "2025-06-15" },
+      // ... até mais de 10 vagas para testes
+    ];
+
+    const vagasPorPagina = 2;
+    let paginaAtual = 1;
+    let vagasFiltradas = [...todasAsVagas];
+
+    function renderizarVagas() {
+      const lista = document.getElementById("listaVagas");
+      lista.innerHTML = "";
+      const inicio = (paginaAtual - 1) * vagasPorPagina;
+      const fim = inicio + vagasPorPagina;
+      const vagasPagina = vagasFiltradas.slice(inicio, fim);
+
+      vagasPagina.forEach(vaga => {
+        const div = document.createElement("div");
+        div.className = "vaga-card";
+        div.innerHTML = `
+          <h3>${vaga.titulo}</h3>
+          <p><strong>Empresa:</strong> ${vaga.empresa}</p>
+          <p><strong>Cursos:</strong> ${vaga.cursos}</p>
+          <p><strong>Bolsa:</strong> R$ ${vaga.valor_bolsa.toFixed(2)}</p>
+          <p><strong>Publicada em </strong> ${vaga.data}</p>
+          <button onclick="verVaga('${vaga.titulo}')">Ver Vaga</button>
+        `;
+        lista.appendChild(div);
+      });
+
+      renderizarPaginacao();
+    }
+
+    function renderizarPaginacao() {
+      const paginacao = document.getElementById("paginacao");
+      paginacao.innerHTML = "";
+
+      const totalPaginas = Math.ceil(vagasFiltradas.length / vagasPorPagina);
+      for (let i = 1; i <= totalPaginas; i++) {
+        const btn = document.createElement("button");
+        btn.innerText = i;
+        if (i === paginaAtual) btn.classList.add("active");
+        btn.onclick = () => {
+          paginaAtual = i;
+          renderizarVagas();
+        };
+        paginacao.appendChild(btn);
+      }
+    }
+
+    function aplicarFiltros() {
+      const curso = document.getElementById("curso").value.toLowerCase();
+      const valorMin = parseFloat(document.getElementById("valorMin").value) || 0;
+      const ordem = document.getElementById("ordem").value;
+
+      vagasFiltradas = todasAsVagas.filter(v => {
+        const matchCurso = !curso || v.cursos.toLowerCase().includes(curso);
+        const matchValor = v.valor_bolsa >= valorMin;
+        return matchCurso && matchValor;
+      });
+
+      if (ordem === "recentes") {
+        vagasFiltradas.sort((a, b) => new Date(b.data) - new Date(a.data));
+      } else if (ordem === "antigas") {
+        vagasFiltradas.sort((a, b) => new Date(a.data) - new Date(b.data));
+      } else if (ordem === "maior_bolsa") {
+        vagasFiltradas.sort((a, b) => b.valor_bolsa - a.valor_bolsa);
+      }
+
+      paginaAtual = 1;
+      renderizarVagas();
+    }
+
+    function verVaga(titulo) {
+      // Aqui pode ser alterado para redirecionar com base no ID da vaga
+      window.location.href = "vaga_estudante.html";
+    }
+
+    // Inicialização
+    renderizarVagas();
+  </script>
+</body>
+</html>

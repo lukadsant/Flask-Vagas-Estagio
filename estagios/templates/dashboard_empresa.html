@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dashboard da Empresa</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .empresa-container {
+      max-width: 1000px;
+      margin: 60px auto;
+      padding: 0 20px;
+    }
+
+    .dados-empresa {
+      background-color: #e6f2ef;
+      padding: 30px;
+      border-radius: 10px;
+      margin-bottom: 40px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+    }
+
+    .dados-empresa h2 {
+      margin-bottom: 20px;
+    }
+
+    .dados-empresa p {
+      margin-bottom: 10px;
+      font-size: 15px;
+      color: #444;
+    }
+
+    .vagas-da-empresa h3 {
+      font-size: 22px;
+      margin-bottom: 20px;
+    }
+
+    .vaga-card {
+      background-color: #f8f8f8;
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 15px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+      transition: transform 0.2s ease;
+    }
+
+    .vaga-card:hover {
+      transform: scale(1.01);
+    }
+
+    .vaga-card a {
+      font-weight: bold;
+      color: #2c7a7b;
+      font-size: 16px;
+      text-decoration: none;
+    }
+
+    .vaga-card span {
+      display: block;
+      font-size: 14px;
+      color: #555;
+      margin-top: 4px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo"><a href="index.html">Estágio-Parceiro</a></div>
+    <nav>
+      <a href="vitrine_empresas.html">Empresas</a>
+      <a href="vitrine_vagas.html">Vagas</a>
+    </nav>
+    <div class="botoes-topo">
+      <button class="btn-entrar"><a href="login.html">Sair</a></button>
+    </div>
+  </header>
+
+  <div class="empresa-container">
+    <section class="dados-empresa">
+      <h2 id="nome-empresa">Nome da Empresa</h2>
+      <p><strong>Descrição:</strong> <span id="descricao-empresa"></span></p>
+      <p><strong>CNPJ:</strong> <span id="cnpj-empresa"></span></p>
+      <p><strong>Telefone:</strong> <span id="telefone-empresa"></span></p>
+      <p><strong>Email:</strong> <span id="email-empresa"></span></p>
+      <p><strong>Endereço:</strong> <span id="endereco-empresa"></span></p>
+    </section>
+
+    <section class="vagas-da-empresa">
+      <h3 id="titulo-vagas">Vagas da Empresa</h3>
+      <div id="lista-vagas-empresa">
+        <!-- Vagas inseridas dinamicamente -->
+      </div>
+    </section>
+  </div>
+
+  <script>
+    // Simulação de dados. Substitua com Jinja ou fetch no Flask.
+    const empresa = {
+      nome: "Tech Solutions",
+      descricao: "Empresa especializada em soluções de software para negócios digitais.",
+      cnpj: "12.345.678/0001-90",
+      telefone: "(81) 91234-5678",
+      email: "contato@techsolutions.com",
+      endereco: "Av. Central, 456 - Recife/PE"
+    };
+
+    const vagas = [
+      {
+        id: 1,
+        titulo: "Estágio em Desenvolvimento Web"
+      },
+      {
+        id: 2,
+        titulo: "Estágio em QA"
+      }
+    ];
+
+    // Inserindo dados da empresa
+    document.getElementById("nome-empresa").textContent = empresa.nome;
+    document.getElementById("descricao-empresa").textContent = empresa.descricao;
+    document.getElementById("cnpj-empresa").textContent = empresa.cnpj;
+    document.getElementById("telefone-empresa").textContent = empresa.telefone;
+    document.getElementById("email-empresa").textContent = empresa.email;
+    document.getElementById("endereco-empresa").textContent = empresa.endereco;
+
+    // Inserindo vagas
+    const containerVagas = document.getElementById("lista-vagas-empresa");
+    const tituloVagas = document.getElementById("titulo-vagas");
+    tituloVagas.textContent = `Vagas de ${empresa.nome}`;
+
+    vagas.forEach(vaga => {
+      const div = document.createElement("div");
+      div.className = "vaga-card";
+      div.innerHTML = `
+        <a href="vaga.html?id=${vaga.id}">${vaga.titulo}</a>
+        <span>ID da vaga: ${vaga.id}</span>
+      `;
+      containerVagas.appendChild(div);
+    });
+  </script>
+</body>
+</html>

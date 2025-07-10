@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dashboard do Estudante</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .dashboard-container {
+      display: flex;
+      gap: 40px;
+      margin-top: 40px;
+      padding: 0 20px;
+    }
+
+    .perfil-estudante {
+      width: 300px;
+      background-color: #e6f2ef;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .perfil-estudante h3 {
+      margin-bottom: 20px;
+      font-size: 20px;
+      border-bottom: 1px solid #ccc;
+      padding-bottom: 5px;
+    }
+
+    .perfil-estudante p {
+      margin: 10px 0;
+      font-size: 14px;
+    }
+
+    .vagas-candidatadas {
+      flex: 1;
+    }
+
+    .vagas-candidatadas h3 {
+      font-size: 22px;
+      margin-bottom: 20px;
+    }
+
+    .vaga-item {
+      background-color: #f8f8f8;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 15px;
+      transition: transform 0.2s ease;
+    }
+
+    .vaga-item:hover {
+      transform: scale(1.01);
+    }
+
+    .vaga-item a {
+      font-weight: bold;
+      color: #2c7a7b;
+      font-size: 16px;
+      display: block;
+      margin-bottom: 8px;
+    }
+
+    .vaga-item span {
+      font-size: 14px;
+      color: #555;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo"><a href="index.html">Estágio-Parceiro</a></div>
+    <nav>
+      <a href="/pesquisar_vagas">Buscar Vagas</a>
+    </nav>
+    <div class="botoes-topo">
+      <button class="btn-entrar"><a href="login.html">Sair</a></button>
+    </div>
+  </header>
+
+  <div class=""></div>
+
+  <div class="dashboard-container">
+    <!-- Perfil do estudante -->
+    <aside class="perfil-estudante">
+      <h3>Seus Dados</h3>
+      <p><strong>Nome:</strong> <span id="nome-estudante">Carregando...</span></p>
+      <p><strong>Email:</strong> <span id="email-estudante">Carregando...</span></p>
+      <p><strong>Telefone:</strong> <span id="telefone-estudante">Carregando...</span></p>
+      <p><strong>Curso:</strong> <span id="curso-estudante">Carregando...</span></p>
+      <p><strong>Período:</strong> <span id="periodo-estudante">Carregando...</span></p>
+      <p><strong>Currículo:</strong> <a href="#" id="curriculo-estudante" target="_blank">Ver link</a></p>
+    </aside>
+
+    <!-- Vagas candidatadas -->
+    <section class="vagas-candidatadas">
+      <h3>Minhas Vagas</h3>
+      <div id="lista-vagas">
+        <!-- Exemplo de vaga (será gerado via JS ou Jinja) -->
+        <!--
+        <div class="vaga-item">
+          <a href="vaga.html?id=123">Desenvolvedor Front-End</a>
+          <span>Empresa: Tech Solutions</span><br>
+          <span>Data da candidatura: 05/06/2025</span>
+        </div>
+        -->
+      </div>
+    </section>
+  </div>
+
+  <script>
+    // Exemplo de integração futura com Flask ou fetch
+    const estudante = {
+      nome: "Maria Oliveira",
+      email: "maria@example.com",
+      telefone: "(81) 91234-5678",
+      curso: "Engenharia da Computação",
+      periodo: "6º",
+      curriculo: "https://linkedin.com/in/mariaoliveira"
+    };
+
+    const vagas = [
+      {
+        id: 1,
+        titulo: "Estágio em Desenvolvimento Web",
+        empresa: "Empresa XYZ",
+        data: "10/06/2025"
+      },
+      {
+        id: 2,
+        titulo: "Estágio em UI/UX",
+        empresa: "DesignCo",
+        data: "15/06/2025"
+      }
+    ];
+
+    document.getElementById("nome-estudante").textContent = estudante.nome;
+    document.getElementById("email-estudante").textContent = estudante.email;
+    document.getElementById("telefone-estudante").textContent = estudante.telefone;
+    document.getElementById("curso-estudante").textContent = estudante.curso;
+    document.getElementById("periodo-estudante").textContent = estudante.periodo;
+    document.getElementById("curriculo-estudante").href = estudante.curriculo;
+
+    const listaVagas = document.getElementById("lista-vagas");
+    vagas.forEach(vaga => {
+      const div = document.createElement("div");
+      div.className = "vaga-item";
+      div.innerHTML = `
+        <a href="vaga_estudante.html?id=${vaga.id}">${vaga.titulo}</a>
+        <span>Empresa: ${vaga.empresa}</span><br>
+        <span>Data da candidatura: ${vaga.data}</span>
+      `;
+      listaVagas.appendChild(div);
+    });
+  </script>
+</body>
+</html>

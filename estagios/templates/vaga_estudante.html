@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Detalhes da Vaga</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .vaga-container {
+      max-width: 800px;
+      margin: 60px auto;
+      padding: 30px;
+      background-color: #e6f2ef;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    .vaga-container h1 {
+      margin-bottom: 10px;
+      font-size: 28px;
+    }
+
+    .vaga-container .empresa {
+      color: #555;
+      margin-bottom: 20px;
+    }
+
+    .vaga-container .detalhe {
+      margin-bottom: 20px;
+    }
+
+    .vaga-container .detalhe strong {
+      display: inline-block;
+      width: 160px;
+      color: #333;
+    }
+
+    .vaga-container .descricao {
+      margin-bottom: 20px;
+      line-height: 1.5;
+      white-space: pre-line;
+    }
+
+    .vaga-container button {
+      display: block;
+      margin: 30px auto 0;
+      padding: 12px 24px;
+      background-color: #5ba59a;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-weight: bold;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .vaga-container button:hover {
+      background-color: #7ccfc3;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo"><a href="index.html">Estágio-Parceiro</a></div>
+    <nav>
+      <a href="/cafe">Pesquisar Vagas</a>
+    </nav>
+    <div class="botoes-topo">
+      <button class="btn-entrar"><a href="login.html">Sair</a></button>
+    </div>
+  </header>
+
+  <div class="vaga-container">
+    <h1 id="titulo">Título da Vaga</h1>
+    <p class="empresa" id="empresaNome">Empresa XYZ</p>
+
+    <div class="detalhe"><strong>Valor da Bolsa:</strong> <span id="valorBolsa">R$ 1.200,00</span></div>
+    <div class="detalhe"><strong>Cursos desejados:</strong> <span id="cursos">Administração, Marketing</span></div>
+    <div class="detalhe"><strong>Data de criação:</strong> <span id="dataCriacao">2025-06-19</span></div>
+
+    <div class="descricao" id="descricao">
+      Esta vaga é destinada a estudantes com interesse em atuar na área de marketing digital, com foco em redes sociais e análise de desempenho de campanhas.
+    </div>
+
+    <button onclick="candidatar()">Candidatar-se</button>
+  </div>
+
+  <script>
+    // Simulação: os dados seriam carregados via Flask / API
+    const vaga = {
+      titulo: "Estágio em Marketing Digital",
+      empresa_nome: "Agência Criativa",
+      descricao: `Esta vaga é destinada a estudantes com interesse em atuar na área de marketing digital, com foco em redes sociais e análise de desempenho de campanhas.
+
+Responsabilidades:
+- Criar conteúdos;
+- Monitorar campanhas;
+- Relatórios semanais.`,
+      valor_bolsa: "1200.00",
+      cursos: "Administração, Marketing",
+      data_criacao: "2025-06-19"
+    };
+
+    document.getElementById("titulo").innerText = vaga.titulo;
+    document.getElementById("empresaNome").innerText = vaga.empresa_nome;
+    document.getElementById("descricao").innerText = vaga.descricao;
+    document.getElementById("valorBolsa").innerText = `R$ ${parseFloat(vaga.valor_bolsa).toFixed(2)}`;
+    document.getElementById("cursos").innerText = vaga.cursos;
+    document.getElementById("dataCriacao").innerText = vaga.data_criacao;
+
+    function candidatar() {
+      alert("Candidatura realizada com sucesso!");
+      // No futuro: enviar requisição para o backend (Flask)
+    }
+  </script>
+</body>
+</html>

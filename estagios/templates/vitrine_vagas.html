@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Vagas Cadastradas</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .container-vagas {
+      max-width: 1200px;
+      margin: 60px auto;
+      padding: 0 20px;
+    }
+
+    .topo-vagas {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 40px;
+    }
+
+    .topo-vagas h2 {
+      font-size: 28px;
+    }
+
+    .btn-adicionar {
+      background-color: #5ba59a;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      font-weight: bold;
+      border-radius: 5px;
+      text-decoration: none;
+      transition: background-color 0.3s;
+    }
+
+    .btn-adicionar:hover {
+      background-color: #7ccfc3;
+    }
+
+    .lista-vagas {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .vaga-card {
+      background-color: #f8f8f8;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+      transition: transform 0.2s ease;
+      cursor: pointer;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .vaga-card:hover {
+      transform: scale(1.02);
+    }
+
+    .vaga-card h4 {
+      font-size: 18px;
+      margin-bottom: 5px;
+      color: #2c7a7b;
+    }
+
+    .vaga-card p {
+      font-size: 14px;
+      color: #555;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo"><a href="index.html">Estágio-Parceiro</a></div>
+    <nav>
+      <a href="vitrine_empresas.html">Empresas</a>
+    </nav>
+    <div class="botoes-topo">
+      <button class="btn-entrar"><a href="login.html">Sair</a></button>
+    </div>
+  </header>
+
+  <div class="container-vagas">
+    <div class="topo-vagas">
+      <h2>Vagas Cadastradas</h2>
+      <a href="adicionar_vaga.html" class="btn-adicionar">Adicionar Vaga</a>
+    </div>
+
+    <div class="lista-vagas" id="lista-vagas">
+      <!-- Cards de vagas serão adicionados aqui -->
+    </div>
+  </div>
+
+  <script>
+    // Simulação de vagas. Substituir por fetch ou Jinja + Flask.
+    const vagas = [
+      {
+        id: 1,
+        titulo: "Estágio em Desenvolvimento Web",
+        data_criacao: "2025-06-01",
+        empresa: { nome: "Tech Solutions" }
+      },
+      {
+        id: 2,
+        titulo: "Estágio em Design UI/UX",
+        data_criacao: "2025-06-15",
+        empresa: { nome: "InovaWeb" }
+      }
+    ];
+
+    const container = document.getElementById("lista-vagas");
+
+    vagas.forEach(vaga => {
+      const card = document.createElement("a");
+      card.className = "vaga-card";
+      card.href = `vaga_admin.html?id=${vaga.id}`;
+      card.innerHTML = `
+        <h4>${vaga.titulo}</h4>
+        <p><strong>Data de Criação:</strong> ${vaga.data_criacao}</p>
+        <p><strong>Empresa:</strong> ${vaga.empresa.nome}</p>
+      `;
+      container.appendChild(card);
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Adicionar Vaga</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .container-vaga {
+      max-width: 900px;
+      margin: 60px auto;
+      padding: 20px;
+    }
+
+    .form-vaga {
+      background-color: #e6f2ef;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-vaga h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .form-vaga label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: 500;
+    }
+
+    .form-vaga input,
+    .form-vaga textarea {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+
+    .curso-autocomplete {
+      position: relative;
+    }
+
+    .curso-autocomplete input {
+      width: 100%;
+    }
+
+    .suggestions {
+      position: absolute;
+      background: white;
+      border: 1px solid #ccc;
+      max-height: 120px;
+      overflow-y: auto;
+      width: 100%;
+      z-index: 10;
+    }
+
+    .suggestions div {
+      padding: 8px;
+      cursor: pointer;
+    }
+
+    .suggestions div:hover {
+      background-color: #eee;
+    }
+
+    .selected-cursos {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 15px;
+    }
+
+    .curso-chip {
+      background-color: #5ba59a;
+      color: white;
+      padding: 6px 12px;
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+    }
+
+    .curso-chip button {
+      background: none;
+      border: none;
+      color: white;
+      margin-left: 8px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    .form-vaga button {
+      width: 100%;
+      padding: 12px;
+      background-color: #5ba59a;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .form-vaga button:hover {
+      background-color: #7ccfc3;
+    }
+
+    .btn-voltar {
+      display: inline-block;
+      margin-top: 20px;
+      padding: 10px 20px;
+      background-color: #ccc;
+      color: #333;
+      text-decoration: none;
+      border-radius: 5px;
+    }
+
+    .btn-voltar:hover {
+      background-color: #aaa;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo"><a href="index.html">Estágio-Parceiro</a></div>
+    <nav>
+      <a href="vitrine_empresas.html">Empresas</a>
+      <a href="vitrine_vagas.html">Vagas</a>
+    </nav>
+    <div class="botoes-topo">
+      <button class="btn-entrar"><a href="login.html">Sair</a></button>
+    </div>
+  </header>
+
+  <div class="container-vaga">
+    <div class="form-vaga">
+      <h2>Adicionar Nova Vaga</h2>
+      <form id="formVaga">
+        <label for="titulo">Título da Vaga</label>
+        <input type="text" id="titulo" name="titulo" required />
+
+        <label for="empresa">Empresa</label>
+        <input list="empresas" id="empresa" name="empresa" required />
+        <datalist id="empresas">
+          <option value="Tech Solutions">
+          <option value="InovaWeb">
+          <option value="SoftCorp">
+        </datalist>
+
+        <label for="descricao">Descrição</label>
+        <textarea id="descricao" name="descricao" rows="4" required></textarea>
+
+        <label for="cursoInput">Cursos (mínimo 1)</label>
+        <div class="curso-autocomplete">
+          <input type="text" id="cursoInput" placeholder="Digite e selecione um curso..." autocomplete="off" />
+          <div class="suggestions" id="cursoSugestoes"></div>
+        </div>
+        <div class="selected-cursos" id="cursosSelecionados"></div>
+
+        <label for="valor_bolsa">Valor da Bolsa (R$)</label>
+        <input type="number" step="0.01" min="0" id="valor_bolsa" name="valor_bolsa" required />
+
+        <button type="submit">Cadastrar Vaga</button>
+      </form>
+    </div>
+
+    <a href="vitrine_vagas.html" class="btn-voltar">Voltar para Vitrine de Vagas</a>
+  </div>
+
+  <script>
+    const todosCursos = [
+      "Sistemas de Informação", "Ciência da Computação", "Engenharia de Software",
+      "Engenharia da Computação", "Administração", "Marketing", "Qualidade",
+      "Contabilidade", "Design", "Engenharia Elétrica", "Análise e Desenvolvimento de Sistemas"
+    ];
+
+    const inputCurso = document.getElementById("cursoInput");
+    const sugestoes = document.getElementById("cursoSugestoes");
+    const cursosSelecionados = document.getElementById("cursosSelecionados");
+    let cursos = [];
+
+    inputCurso.addEventListener("input", () => {
+      const termo = inputCurso.value.toLowerCase();
+      sugestoes.innerHTML = "";
+      if (termo) {
+        const filtrados = todosCursos.filter(c => c.toLowerCase().includes(termo) && !cursos.includes(c));
+        filtrados.forEach(curso => {
+          const div = document.createElement("div");
+          div.textContent = curso;
+          div.onclick = () => {
+            cursos.push(curso);
+            renderizarCursos();
+            inputCurso.value = "";
+            sugestoes.innerHTML = "";
+          };
+          sugestoes.appendChild(div);
+        });
+      }
+    });
+
+    function renderizarCursos() {
+      cursosSelecionados.innerHTML = "";
+      cursos.forEach(curso => {
+        const chip = document.createElement("div");
+        chip.className = "curso-chip";
+        chip.innerHTML = `${curso} <button onclick="removerCurso('${curso}')">&times;</button>`;
+        cursosSelecionados.appendChild(chip);
+      });
+    }
+
+    window.removerCurso = function (curso) {
+      cursos = cursos.filter(c => c !== curso);
+      renderizarCursos();
+    };
+
+    document.getElementById("formVaga").addEventListener("submit", function (e) {
+      e.preventDefault();
+      if (cursos.length === 0) {
+        alert("Selecione pelo menos um curso.");
+        return;
+      }
+
+      const form = e.target;
+      const vaga = {
+        titulo: form.titulo.value,
+        empresa: form.empresa.value,
+        descricao: form.descricao.value,
+        cursos: cursos.join(","),  // <-- string única
+        valor_bolsa: parseFloat(form.valor_bolsa.value)
+      };
+
+      console.log("Enviar ao backend:", vaga);
+
+      // fetch('/cadastrar_vaga', {
+      //   method: 'POST',
+      //   body: JSON.stringify(vaga),
+      //   headers: { 'Content-Type': 'application/json' }
+      // })
+
+      alert("Vaga cadastrada com sucesso!");
+      form.reset();
+      cursos = [];
+      renderizarCursos();
+    });
+  </script>
+</body>
+</html>

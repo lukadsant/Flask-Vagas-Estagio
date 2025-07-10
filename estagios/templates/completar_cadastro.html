@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Completar Cadastro</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <div class="logo"><a href="index.html">Estágio-Parceiro</a></div>
+    <nav>
+      <a href="#">Vagas</a>
+      <a href="#">Empresas</a>
+    </nav>
+    <div class="botoes-topo">
+      <button class="btn-entrar"><a href="login.html">Sair</a></button>
+    </div>
+  </header>
+
+  <div class="container">
+    <div class="form-area">
+      <h2>Completar Cadastro</h2>
+      <div class="form-box">
+        <form id="formCompletarCadastro">
+          <label for="nome">Nome completo</label>
+          <input type="text" id="nome" name="nome" required />
+
+          <label for="telefone">Telefone</label>
+          <input type="tel" id="telefone" name="telefone" required />
+
+          <label for="curso">Curso</label>
+          <input type="text" id="curso" name="curso" required />
+
+          <label for="periodo">Período</label>
+          <input type="text" id="periodo" name="periodo" required />
+
+          <label for="curriculo">Link do Currículo (LinkedIn, PDF etc.)</label>
+          <input type="url" id="curriculo" name="curriculo" required />
+
+          <button type="submit" class="botao-enviar" onclick="window.location.href='dashboard_estudante.html'">Salvar Informações</button>
+        </form>
+      </div>
+    </div>
+
+    <div class="imagem-lado">
+      <img src="imgs/DrawKit Digital Marketing Vector Illustration v2.0/Scenes/Scenes01.svg" alt="Completar Cadastro" />
+    </div>
+  </div>
+</body>
+</html>

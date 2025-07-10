@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Cadastrar Empresa</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .container-cadastro {
+      max-width: 900px;
+      margin: 60px auto;
+      padding: 20px;
+    }
+
+    .form-cadastro {
+      background-color: #e6f2ef;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-cadastro h2 {
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .form-cadastro label {
+      display: block;
+      margin-bottom: 8px;
+    }
+
+    .form-cadastro input, 
+    .form-cadastro textarea {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    .form-cadastro button {
+      width: 100%;
+      padding: 12px;
+      background-color: #5ba59a;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .form-cadastro button:hover {
+      background-color: #7ccfc3;
+    }
+
+    .btn-voltar {
+      display: inline-block;
+      margin-top: 20px;
+      padding: 10px 20px;
+      background-color: #ccc;
+      color: #333;
+      text-decoration: none;
+      border-radius: 5px;
+      text-align: center;
+    }
+
+    .btn-voltar:hover {
+      background-color: #aaa;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo"><a href="index.html">Estágio-Parceiro</a></div>
+    <nav>
+      <a href="vitrine_empresas.html">Empresas</a>
+      <a href="vitrine_vagas.html">Vagas</a>
+    </nav>
+    <div class="botoes-topo">
+      <button class="btn-entrar"><a href="login.html">Sair</a></button>
+    </div>
+  </header>
+
+  <div class="container-cadastro">
+    <div class="form-cadastro">
+      <h2>Cadastrar Nova Empresa</h2>
+      <form id="formEmpresa">
+        <label for="nome">Nome da Empresa</label>
+        <input type="text" id="nome" name="nome" required />
+
+        <label for="cnpj">CNPJ</label>
+        <input type="text" id="cnpj" name="cnpj" required />
+
+        <label for="descricao">Descrição</label>
+        <textarea id="descricao" name="descricao" rows="4" required></textarea>
+
+        <label for="telefone">Telefone</label>
+        <input type="text" id="telefone" name="telefone" required />
+
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" required />
+
+        <label for="endereco">Endereço</label>
+        <input type="text" id="endereco" name="endereco" required />
+
+        <button type="submit">Cadastrar Empresa</button>
+      </form>
+    </div>
+
+    <a href="vitrine_empresas.html" class="btn-voltar">Voltar para Empresas</a>
+  </div>
+
+  <script>
+    document.getElementById("formEmpresa").addEventListener("submit", function (e) {
+      e.preventDefault();
+      const dados = Object.fromEntries(new FormData(e.target));
+      console.log("Enviar dados:", dados);
+      // Aqui você pode enviar os dados para o back-end via fetch ou outra técnica de envio
+      // Exemplo: fetch('/cadastrar_empresa', { method: 'POST', body: JSON.stringify(dados), headers: { 'Content-Type': 'application/json' } })
+
+      alert("Empresa cadastrada com sucesso!");
+      e.target.reset(); // Limpa o formulário
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Empresas Parceiras</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .container-empresas {
+      max-width: 1200px;
+      margin: 60px auto;
+      padding: 0 20px;
+    }
+
+    .topo-empresas {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .lista-empresas {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 30px;
+      justify-content: center;
+    }
+
+    .card-empresa {
+      background-color: #e6f2ef;
+      padding: 25px 30px;
+      border-radius: 10px;
+      width: 260px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+      transition: transform 0.2s ease;
+      cursor: pointer;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .card-empresa:hover {
+      transform: scale(1.03);
+    }
+
+    .card-empresa h4 {
+      font-size: 18px;
+      margin-bottom: 10px;
+    }
+
+    .card-empresa p {
+      font-size: 14px;
+      color: #444;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo"><a href="index.html">Estágio-Parceiro</a></div>
+    <nav>
+      <a href="cadastrar_empresa.html" class="botao-cadastro-empresa">Cadastrar Empresa</a>
+      <a href="vitrine_vagas.html">Vagas</a>
+    </nav>
+    <div class="botoes-topo">
+      <button class="btn-entrar"><a href="login.html">Sair</a></button>
+    </div>
+  </header>
+
+  <div class="container-empresas">
+    <div class="topo-empresas">
+      <h2>Empresas Parceiras</h2>
+      <p>Visualize e gerencie as empresas cadastradas</p>
+    </div>
+
+    <div class="lista-empresas" id="lista-empresas">
+      <!-- Cards gerados dinamicamente -->
+      <!--
+      <a class="card-empresa" href="dashboard_empresa.html?id=1">
+        <h4>Empresa Exemplo</h4>
+        <p>CNPJ: 00.000.000/0001-00</p>
+      </a>
+      -->
+    </div>
+  </div>
+
+  <script>
+    // Dados simulados para exemplo. No Flask, substitua por Jinja ou fetch.
+    const empresas = [
+      {
+        id: 1,
+        nome: "Tech Solutions",
+        cnpj: "12.345.678/0001-90"
+      },
+      {
+        id: 2,
+        nome: "InovaWeb",
+        cnpj: "98.765.432/0001-12"
+      }
+    ];
+
+    const container = document.getElementById("lista-empresas");
+
+    empresas.forEach(empresa => {
+      const card = document.createElement("a");
+      card.className = "card-empresa";
+      card.href = `dashboard_empresa.html?id=${empresa.id}`;
+      card.innerHTML = `
+        <h4>${empresa.nome}</h4>
+        <p>CNPJ: ${empresa.cnpj}</p>
+      `;
+      container.appendChild(card);
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin - Detalhes da Vaga</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .vaga-container {
+      max-width: 800px;
+      margin: 60px auto;
+      padding: 30px;
+      background-color: #e6f2ef;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    .vaga-container h1 {
+      margin-bottom: 10px;
+      font-size: 28px;
+    }
+
+    .vaga-container .empresa {
+      color: #555;
+      margin-bottom: 20px;
+    }
+
+    .vaga-container .detalhe {
+      margin-bottom: 20px;
+    }
+
+    .vaga-container .detalhe strong {
+      display: inline-block;
+      width: 160px;
+      color: #333;
+    }
+
+    .vaga-container .descricao {
+      margin-bottom: 30px;
+      line-height: 1.5;
+      white-space: pre-line;
+    }
+
+    .candidatos {
+      margin-top: 40px;
+    }
+
+    .candidatos h3 {
+      margin-bottom: 20px;
+      font-size: 22px;
+      color: #333;
+    }
+
+    .candidato-card {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+      margin-bottom: 20px;
+    }
+
+    .candidato-card p {
+      margin: 6px 0;
+    }
+
+    .candidato-card a {
+      color: #007b7a;
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo"><a href="index.html">Estágio-Parceiro</a></div>
+    <nav>
+      <a href="dashboard_admin.html">Dashboard</a>
+      <a href="vitrine_vagas.html">Vagas</a>
+    </nav>
+    <div class="botoes-topo">
+      <button class="btn-entrar"><a href="login.html">Sair</a></button>
+    </div>
+  </header>
+
+  <div class="vaga-container">
+    <h1 id="titulo">Título da Vaga</h1>
+    <p class="empresa" id="empresaNome">Empresa XYZ</p>
+
+    <div class="detalhe"><strong>Valor da Bolsa:</strong> <span id="valorBolsa">R$ 0,00</span></div>
+    <div class="detalhe"><strong>Cursos desejados:</strong> <span id="cursos">-</span></div>
+    <div class="detalhe"><strong>Data de criação:</strong> <span id="dataCriacao">-</span></div>
+
+    <div class="descricao" id="descricao">
+      ...
+    </div>
+
+    <div class="candidatos">
+      <h3>Candidatos a esta vaga</h3>
+      <div id="listaCandidatos">
+        <!-- Cards de candidatos serão inseridos aqui -->
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Dados da vaga (simulação)
+    const vaga = {
+      titulo: "Estágio em UX/UI Design",
+      empresa_nome: "Studio Criativo",
+      descricao: `Apoio em tarefas de design visual e experiência do usuário.
+Prototipagem, testes de usabilidade, colaboração com time de produto.`,
+      valor_bolsa: "1500.00",
+      cursos: "Design, Sistemas de Informação",
+      data_criacao: "2025-06-19"
+    };
+
+    // Dados dos candidatos (simulação)
+    const candidatos = [
+      {
+        nome: "Ana Beatriz Souza",
+        email: "ana.souza@email.com",
+        curriculo: "https://meucurriculo.com/ana-beatriz",
+        data: "2025-06-18"
+      },
+      {
+        nome: "Carlos Eduardo Lima",
+        email: "carlos.lima@email.com",
+        curriculo: "https://meucurriculo.com/carlos-lima",
+        data: "2025-06-18"
+      }
+    ];
+
+    // Preencher dados da vaga
+    document.getElementById("titulo").innerText = vaga.titulo;
+    document.getElementById("empresaNome").innerText = vaga.empresa_nome;
+    document.getElementById("descricao").innerText = vaga.descricao;
+    document.getElementById("valorBolsa").innerText = `R$ ${parseFloat(vaga.valor_bolsa).toFixed(2)}`;
+    document.getElementById("cursos").innerText = vaga.cursos;
+    document.getElementById("dataCriacao").innerText = vaga.data_criacao;
+
+    // Preencher lista de candidatos
+    const listaCandidatos = document.getElementById("listaCandidatos");
+
+    candidatos.forEach(estudante => {
+      const card = document.createElement("div");
+      card.className = "candidato-card";
+      card.innerHTML = `
+        <p><strong>Nome:</strong> ${estudante.nome}</p>
+        <p><strong>Email:</strong> ${estudante.email}</p>
+        <p><strong>Currículo:</strong> <a href="${estudante.curriculo}" target="_blank">Visualizar</a></p>
+        <p><strong>Data da candidatura:</strong> ${estudante.data}</p>
+      `;
+      listaCandidatos.appendChild(card);
+    });
+  </script>
+</body>
+</html>

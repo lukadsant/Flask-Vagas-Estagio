@@ -1,0 +1,53 @@
+Telas do Estágio Parceiro
+
+0.0 - Mude o diretório do launch.json em caso de erros ao abrir as telas no VSCODE
+
+1# - index.html
+- página HOME com informações básicas
+
+possui link para:
+
+    cadastro.html
+    login.html
+    pesquisar_vagas.html
+
+2# - cadastro.html
+- cadastro universal de user
+
+possui link para:
+
+    completar_cadastro.html
+    dashboard_admin.html
+    
+
+2.1# - completar_cadastro.html
+- para o estudante adicionar as informações complementares
+
+3# - login.html
+
+4# - dashboard_estudante.html
+- mostra as vagas que ele se candidatou
+- mostra uma coluna na esquerda com suas informações
+
+5# - dashboard_admin.html
+- mostra 
+
+5.1# - vitrine_empresas.html
+- para admin administrar as empresas
+
+5.1.1# - ver empresas existentes + vagas delas
+
+5.1.2# - cadastrar nova empresa [formulário popup?]
+
+5.2# - vitrine_vagas.html
+- para admin administrar vagas
+
+5.2.1# - ver todas as vagas
+
+5.2.2# - adicionar nova vaga [formulário popup?]
+
+6# - pesquisar_vagas.html
+- para estudante pesquisar vagas
+
+7# - vaga.html
+- tela cheia com a vaga

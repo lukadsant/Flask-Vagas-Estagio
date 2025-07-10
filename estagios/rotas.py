@@ -1,5 +1,5 @@
 from estagios import app, mail
-from flask import request
+from flask import request, render_template
 import random
 from flask_mail import Message
 from estagios import db
@@ -8,10 +8,19 @@ from estagios.models import User, RoleEnum, Estudante, Empresa
 
 @app.route('/')
 def homepage():
-    return "Home Page"
+    print("homepage")
+    return render_template("index.html")
+
+
+@app.route('/cafe')
+def paginatest():
+    return render_template("cafe.html")
+
 
 @app.route('/cadastra_usuario', methods=['POST'])
 def cadastraUsuario():
+    print("cadastra_usuario")
+
     dados = request.get_json()
     novoUsuario = User(
         email = dados.get('email'),
@@ -21,6 +30,8 @@ def cadastraUsuario():
     db.session.add(novoUsuario)
     db.session.commit()
     return {'id': novoUsuario.id}
+
+
 
 @app.route('/confirma_email', methods=['POST'])
 def confirmaEmail():

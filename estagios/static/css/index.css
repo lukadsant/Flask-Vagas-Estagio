@@ -1,0 +1,201 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  html {
+    scroll-behavior: smooth;
+  }
+
+  a {
+    color: #ffffff;
+    text-decoration: none;
+  }
+
+  body {
+    font-family: 'Trebuchet MS', sans-serif;
+    background-color: #ffffff;
+    padding: 20px;
+  }
+  
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #ddd;
+    padding: 10px 30px;
+  }
+  
+  .logo {
+    font-weight: bold;
+    font-size: 20px;
+  }
+  
+  nav button {
+    margin: 0 10px;
+    text-decoration: none;
+    color: #333;
+    font-weight: 500;
+    transition: transform 0.3s ease;
+    border: none;
+  }
+
+  nav button a {
+    background-color: white;
+    color: #333;
+    font-family: 'Trebuchet MS', sans-serif;
+    font-size: 16px;
+  }
+
+  nav button:hover {
+    transform: scale(1.05);
+  }
+  
+  .botoes-topo button {
+    margin-left: 10px;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+  }
+  
+  .btn-cadastrar {
+    background-color: #5ba59a;
+    color: white;
+    transition: transform 0.3s ease;
+  }
+
+    .btn-cadastrar:hover {
+    background-color: #7ccfc3;
+    transform: scale(1.02)
+  }
+  
+  .btn-entrar {
+    background-color: white;
+    color: #5ba59a;
+    border: 1px solid #5ba59a;
+    transition: transform 0.3s ease;
+  }
+
+    .btn-entrar:hover {
+    background-color: rgba(206, 232, 236, 0.267);
+    color: #55c0b0;
+    transform: scale(1.02)
+  }
+
+    .btn-entrar a{
+    color: #54968c;
+  }
+  
+  .espaco {
+    width: 300px;
+    height: 150px;
+  }
+
+    .hero {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 80px 40px;
+      gap: 40px;
+    }
+
+    .hero-text h1 {
+      font-size: 28px;
+      margin-bottom: 10px;
+    }
+
+    .hero-text p {
+      margin-bottom: 20px;
+      font-size: 16px;
+    }
+
+    .hero-text button {
+      padding: 10px 18px;
+      background-color: #1a1a1a;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+    }
+
+    .hero-text button:hover {
+      transform: scale(1.02);
+    }
+
+    .hero img {
+      max-width: 600px;
+    }
+
+    .vantagens {
+      text-align: center;
+      padding: 100px 20px;
+    }
+
+    .vantagens h2 {
+      font-size: 32px;
+      margin-bottom: 60px;
+    }
+
+    .cards {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 30px;
+      user-select: none;
+    }
+
+    .card {
+      border: 1px dashed #ccc;
+      border-radius: 16px;
+      padding: 30px;
+      width: 230px;
+      background-color: #fff;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+      transition: transform 0.3s ease;
+    }
+
+    .card:hover {
+      transform: scale(1.05);
+    }
+
+    .card i {
+      font-size: 28px;
+      margin-bottom: 10px;
+    }
+
+    .card p {
+      font-size: 14px;
+      color: #555;
+    }
+
+    footer {
+      background-color: #e6f2ef;
+      padding: 40px 40px;
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      font-size: 14px;
+    }
+
+    .footer-left, .footer-right {
+      margin-bottom: 10px;
+    }
+
+    .footer-left, .footer-right p {
+      font-size: 15px;
+      font-weight: bolder;
+    }
+
+    .footer-social {
+      margin-top: 10px;
+    }
+
+    .footer-social img {
+      width: 24px;
+      margin-right: 8px;
+    }
